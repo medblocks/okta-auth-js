@@ -15,6 +15,7 @@
 import { Remediator, RemediationValues } from './Remediator';
 import { IdxRemediationValue, IdxOption, IdxRemediation } from '../../types/idx-js';
 import { Authenticator } from '../../types';
+import { compareAuthenticators } from '../../authenticator/util';
 
 export type AuthenticatorDataValues = RemediationValues & {
   methodType?: string;
@@ -43,7 +44,7 @@ export class AuthenticatorData extends Remediator {
     const authenticatorData = this.getAuthenticatorData();
     if (authenticatorData) {
       this.values.authenticatorsData = this.values.authenticatorsData!.map(data => {
-        if (data.key === this.authenticator.key) {
+        if (compareAuthenticators(this.authenticator, data)) {
           return this.mapAuthenticatorDataFromValues(data);
         }
         return data;
@@ -58,12 +59,12 @@ export class AuthenticatorData extends Remediator {
 
   protected getAuthenticatorData() {
     return this.values.authenticatorsData!
-      .find(({ key }) => key === this.authenticator.key);
+      .find((data) => compareAuthenticators(this.authenticator, data));
   }
 
   canRemediate() {
     return this.values.authenticatorsData!
-      .some(data => data.key === this.authenticator.key);
+      .some(data => compareAuthenticators(this.authenticator, data));
   }
 
   getNextStep() {
@@ -102,7 +103,7 @@ export class AuthenticatorData extends Remediator {
     this.values = super.getValuesAfterProceed();
     // remove used authenticatorData
     const authenticatorsData = this.values.authenticatorsData!
-      .filter(data => data.key !== this.authenticator.key);
+      .filter(data => compareAuthenticators(this.authenticator, data) !== true);
     return { ...this.values, authenticatorsData };
   }
 }

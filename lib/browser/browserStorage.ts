@@ -44,8 +44,8 @@ var storageUtil: BrowserStorageUtil = {
   // https://connect.microsoft.com/IE/Feedback/Details/1496040
   browserHasLocalStorage: function() {
     try {
-      var storage = storageUtil.getLocalStorage();
-      return storageUtil.testStorage(storage);
+      var storage = this.getLocalStorage();
+      return this.testStorage(storage);
     } catch (e) {
       return false;
     }
@@ -53,8 +53,8 @@ var storageUtil: BrowserStorageUtil = {
 
   browserHasSessionStorage: function() {
     try {
-      var storage = storageUtil.getSessionStorage();
-      return storageUtil.testStorage(storage);
+      var storage = this.getSessionStorage();
+      return this.testStorage(storage);
     } catch (e) {
       return false;
     }
@@ -64,10 +64,10 @@ var storageUtil: BrowserStorageUtil = {
     var supported = false;
     switch (storageType) {
       case 'sessionStorage':
-        supported = storageUtil.browserHasSessionStorage();
+        supported = this.browserHasSessionStorage();
         break;
       case 'localStorage':
-        supported = storageUtil.browserHasLocalStorage();
+        supported = this.browserHasLocalStorage();
         break;
       case 'cookie':
       case 'memory':
@@ -84,16 +84,16 @@ var storageUtil: BrowserStorageUtil = {
     let storageProvider;
     switch (storageType) {
       case 'sessionStorage':
-        storageProvider = storageUtil.getSessionStorage();
+        storageProvider = this.getSessionStorage();
         break;
       case 'localStorage':
-        storageProvider = storageUtil.getLocalStorage();
+        storageProvider = this.getLocalStorage();
         break;
       case 'cookie':
-        storageProvider = storageUtil.getCookieStorage(options);
+        storageProvider = this.getCookieStorage(options);
         break;
       case 'memory':
-        storageProvider = storageUtil.getInMemoryStorage();
+        storageProvider = this.getInMemoryStorage();
         break;
       default:
         throw new AuthSdkError(`Unrecognized storage option: ${storageType}`);
@@ -113,7 +113,7 @@ var storageUtil: BrowserStorageUtil = {
       return curType;
     }
 
-    if (storageUtil.testStorageType(curType)) {
+    if (this.testStorageType(curType)) {
       return curType;
     }
 
@@ -121,7 +121,7 @@ var storageUtil: BrowserStorageUtil = {
     warn(`This browser doesn't support ${curType}. Switching to ${nextType}.`);
 
     // fallback to the next type. this is a recursive call
-    return storageUtil.findStorageType(types);
+    return this.findStorageType(types);
   },
 
   getLocalStorage: function() {
@@ -141,17 +141,17 @@ var storageUtil: BrowserStorageUtil = {
       throw new AuthSdkError('getCookieStorage: "secure" and "sameSite" options must be provided');
     }
     const storage: CookieStorage = {
-      getItem: storageUtil.storage.get,
-      setItem: function(key, value, expiresAt = '2200-01-01T00:00:00.000Z') {
+      getItem: this.storage.get,
+      setItem: (key, value, expiresAt = '2200-01-01T00:00:00.000Z') => {
         // By defauilt, cookie shouldn't expire
         expiresAt = (sessionCookie ? null : expiresAt) as string;
-        storageUtil.storage.set(key, value, expiresAt, {
+        this.storage.set(key, value, expiresAt, {
           secure: secure, 
           sameSite: sameSite,
         });
       },
-      removeItem: function(key) {
-        storageUtil.storage.delete(key);
+      removeItem: (key) => {
+        this.storage.delete(key);
       }
     };
 
@@ -198,7 +198,7 @@ var storageUtil: BrowserStorageUtil = {
   },
 
   // Provides an in-memory solution
-  inMemoryStore: {},
+  inMemoryStore: {}, // override this for a unique memory store per instance
   getInMemoryStorage: function() {
     return {
       getItem: (key) => {
@@ -243,7 +243,7 @@ var storageUtil: BrowserStorageUtil = {
       }
 
       Cookies.set(name, value, cookieOptions);
-      return storageUtil.storage.get(name);
+      return this.get(name);
     },
 
     get: function(name: string): string {
