@@ -14,7 +14,7 @@
 
 import { Remediator, RemediationValues } from './Remediator';
 import { IdxRemediationValue, IdxOption, IdxRemediation } from '../../types/idx-js';
-import { Authenticator } from '../../types';
+import { Authenticator, isAuthenticator } from '../../types';
 import { compareAuthenticators } from '../../authenticator/util';
 
 export type AuthenticatorDataValues = RemediationValues & {
@@ -23,11 +23,6 @@ export type AuthenticatorDataValues = RemediationValues & {
 
 // Base class - DO NOT expose static remediationName
 export class AuthenticatorData extends Remediator {
-
-  map = {
-    'authenticator': []
-  };
-
   values!: AuthenticatorDataValues;
   authenticator: Authenticator;
 
@@ -78,9 +73,14 @@ export class AuthenticatorData extends Remediator {
 
   protected mapAuthenticatorDataFromValues(authenticatorData?) {
     // add methodType to authenticatorData if it exists in values
-    const { methodType } = this.values;
+    let { methodType, authenticator } = this.values;
+    if (!methodType && isAuthenticator(authenticator)) {
+     methodType = authenticator?.methodType;
+    }
+    
     const data = { 
-      key: this.authenticator.key, 
+      // key: this.authenticator.key, 
+      id: this.authenticator.id,
       ...(authenticatorData && authenticatorData),
       ...(methodType && { methodType }) 
     };

@@ -2,7 +2,7 @@
   "compilerOptions": {
     "composite": false,
     "module": "es6",
-    "target": "es6",
+    "target": "es2017",
     "allowJs": true,
     "checkJs": true,
     "moduleResolution": "node",
