@@ -28,5 +28,9 @@ export default {
     '^@okta/okta-auth-js$': OktaAuth
   },
   'extensionsToTreatAsEsm': ['.ts'],
-  'testPathIgnorePatterns': []
+  'testPathIgnorePatterns': [],
+  'reporters': [
+    'default',
+    'jest-junit'
+  ]
 };

@@ -1,3 +1,4 @@
+// eslint-disable-next-line node/no-extraneous-import
 import { jest } from '@jest/globals';
 import Cookies from 'js-cookie';
 import Emitter from 'tiny-emitter';
