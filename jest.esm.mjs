@@ -18,6 +18,7 @@ export default {
   'roots': [
     'test/validate-bundles'
   ],
+  'testEnvironment': 'jsdom',
   'testMatch': [
     '**/test/validate-bundles/**/*.{js,ts}'
   ],

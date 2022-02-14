@@ -10,14 +10,13 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-
+// @ts-ignore
+import PCancelable from 'p-cancelable';
 import { AuthSdkError } from './errors';
 import { AuthState, AuthStateLogOptions } from './types';
 import { OktaAuth } from '.';
 import { getConsole } from './util';
 import { EVENT_ADDED, EVENT_REMOVED } from './TokenManager';
-// eslint-disable-next-line import/no-commonjs
-const PCancelable = require('p-cancelable');
 
 export const INITIAL_AUTH_STATE = null;
 const DEFAULT_PENDING = {

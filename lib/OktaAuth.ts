@@ -133,9 +133,8 @@ import {
   clearTransactionMeta,
   isTransactionMetaValid
 } from './idx/transactionMeta';
-
-// eslint-disable-next-line import/no-commonjs
-const Emitter = require('tiny-emitter');
+// @ts-ignore 
+import Emitter from 'tiny-emitter';
 
 class OktaAuth implements OktaAuthInterface, SigninAPI, SignoutAPI {
   options: OktaAuthOptions;
