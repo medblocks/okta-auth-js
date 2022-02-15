@@ -158,7 +158,6 @@
     "directory": "test/types",
     "compilerOptions": {
       "skipLibCheck": true,
-      "allowSyntheticDefaultImports": true,
       "types": [
         "node"
       ],

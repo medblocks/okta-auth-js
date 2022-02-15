@@ -9,8 +9,9 @@
  * 
  * See the License for the specific language governing permissions and limitations under the License.
  */
-
-// @ts-ignore
+ 
+// @ts-ignore 
+// Do not use this type in code, so it won't be emitted in the declaration output
 import PCancelable from 'p-cancelable';
 import { AuthSdkError } from './errors';
 import { AuthState, AuthStateLogOptions } from './types';
@@ -42,7 +43,7 @@ const isSameAuthState = (prevState: AuthState | null, state: AuthState) => {
 export class AuthStateManager {
   _sdk: OktaAuth;
   _pending: { 
-    updateAuthStatePromise: typeof PCancelable;
+    updateAuthStatePromise: any;
     canceledTimes: number; 
   };
   _authState: AuthState | null;

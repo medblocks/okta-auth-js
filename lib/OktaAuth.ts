@@ -134,6 +134,7 @@ import {
   isTransactionMetaValid
 } from './idx/transactionMeta';
 // @ts-ignore 
+// Do not use this type in code, so it won't be emitted in the declaration output
 import Emitter from 'tiny-emitter';
 
 class OktaAuth implements OktaAuthInterface, SigninAPI, SignoutAPI {
@@ -150,7 +151,7 @@ class OktaAuth implements OktaAuthInterface, SigninAPI, SignoutAPI {
   features!: FeaturesAPI;
   token: TokenAPI;
   _tokenQueue: PromiseQueue;
-  emitter: typeof Emitter;
+  emitter: any;
   tokenManager: TokenManager;
   authStateManager: AuthStateManager;
   http: HttpAPI;
