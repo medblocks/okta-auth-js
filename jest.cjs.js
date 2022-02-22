@@ -12,22 +12,25 @@
 
 //Jest doc: https://jestjs.io/docs/ecmascript-modules
 
-var OktaAuth = '<rootDir>/build/bundles-for-validation/esm/index.mjs';
+var OktaAuth = '<rootDir>/build/cjs/index.js';
 
-export default {
+module.exports = {
   'roots': [
     'test/validate-bundles'
   ],
-  'testEnvironment': 'jsdom',
   'testMatch': [
     '**/test/validate-bundles/**/*.{js,ts}'
   ],
-  'transform': {},
+  'transform': {
+    '^.+\\.(ts)$': 'babel-jest'
+  },
+  'transformIgnorePatterns': [
+    OktaAuth
+  ],
   'restoreMocks': true,
   'moduleNameMapper': {
     '^@okta/okta-auth-js$': OktaAuth
   },
-  'extensionsToTreatAsEsm': ['.ts'],
   'testPathIgnorePatterns': [],
   'reporters': [
     'default',
